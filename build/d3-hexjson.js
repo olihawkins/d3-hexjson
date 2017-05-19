@@ -54,7 +54,7 @@
 			hex.rc = hex.r - rmin;
 
 			// Calculate the x and y position of each hex for this svg
-			hex.x = getX(hex, layout, hexWidth, hexRadius);
+			hex.x = getX(hex, layout, hexWidth, hexRadius, rnum);
 			hex.y = getY(hex, layout, hexWidth, hexRadius, height);
 
 			// Add the vertex positions and points relative to x and y
@@ -66,22 +66,22 @@
 	};
 
 	// Get the x position for a hex
-	function getX(hex, layout, hexWidth, hexRadius) {
+	function getX(hex, layout, hexWidth, hexRadius, rnum) {
 
 		var x = 0,
-			xOffset = 0;
+			xOffset = 0,
+			oddMod = (rnum % 2 === 0) ? 0 : 1,
+			evenMod = (rnum % 2 === 0) ? 1 : 0;
 
 		switch (layout) {
 
 			case "odd-r":
-
-				xOffset = (hex.rc % 2 === 0) ? hexWidth : (hexWidth / 2);
+				xOffset = (hex.rc % 2 === oddMod) ? hexWidth : (hexWidth / 2);
 				x = (hex.qc * hexWidth) + xOffset;
 				break;
 
 			case "even-r":
-
-				xOffset = (hex.rc % 2 === 1) ? hexWidth : (hexWidth / 2);
+				xOffset = (hex.rc % 2 === evenMod) ? hexWidth : (hexWidth / 2);
 				x = (hex.qc * hexWidth) + xOffset;
 				break;
 
@@ -104,7 +104,6 @@
 
 			case "odd-r":
 			case "even-r":
-
 				y = height - ((hex.rc * hexRadius * 1.5) + hexRadius);
 				break;
 
