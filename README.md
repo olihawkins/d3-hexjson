@@ -8,7 +8,7 @@ If you use NPM, `npm install d3-hexjson`. Otherwise, download the [latest releas
 
 ## API Reference
 
-<a name="renderHexJSON" href="#renderHexJSON">#</a> <b>renderHexJSON</b>(<i>hexjson</i>, <i>width</i>, <i>height</i>)
+<a name="renderHexJSON" href="#renderHexJSON">#</a> d3.<b>renderHexJSON</b>(<i>hexjson</i>, <i>width</i>, <i>height</i>)
 
 Returns an array of hexes from a HexJSON object, adding to each hex the properties needed to render them as a hexmap with D3. The function calculates the appropriate size to render the hexes within an svg of the given width and height. The central coordinates of each hex are stored in *x* and *y* properties, while the *vertices* property holds an array of coordinate pairs, which specify the position of each vertex relative to x and y. The *points* property contains the vertex coordinates as a string that can be inserted directly into the *points* attribute of a polygon. The key used to reference each hex within the HexJSON object is stored within each hex in the *key* property. As these properties are added to the hexes stored in the source HexJSON, they can be accessed eitehr through the returened array or through the original HexJSON object (if you need to merge additional data based on the key, for example).
 
