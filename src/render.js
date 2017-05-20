@@ -47,7 +47,7 @@ export default function renderHexJSON(hexjson, width, height) {
 		
 		// Calculate the absolute co-ordinates of each hex
 		hex.qc = hex.q - qmin;
-		hex.rc = hex.r - rmin;
+		hex.rc = rmax - hex.r;
 
 		// Calculate the x and y position of each hex for this svg
 		hex.x = getX(hex, layout, hexWidth, hexRadius, rnum);
@@ -65,19 +65,17 @@ export default function renderHexJSON(hexjson, width, height) {
 function getX(hex, layout, hexWidth, hexRadius, rnum) {
 
 	var x = 0,
-		xOffset = 0,
-		oddMod = (rnum % 2 === 0) ? 0 : 1,
-		evenMod = (rnum % 2 === 0) ? 1 : 0;
+		xOffset = 0;
 
 	switch (layout) {
 
 		case "odd-r":
-			xOffset = (hex.rc % 2 === oddMod) ? hexWidth : (hexWidth / 2);
+			xOffset = (hex.rc % 2 === 1) ? hexWidth : (hexWidth / 2);
 			x = (hex.qc * hexWidth) + xOffset;
 			break;
 
 		case "even-r":
-			xOffset = (hex.rc % 2 === evenMod) ? hexWidth : (hexWidth / 2);
+			xOffset = (hex.rc % 2 === 0) ? hexWidth : (hexWidth / 2);
 			x = (hex.qc * hexWidth) + xOffset;
 			break;
 
@@ -100,17 +98,17 @@ function getY(hex, layout, hexWidth, hexRadius, height) {
 
 		case "odd-r":
 		case "even-r":
-			y = height - ((hex.rc * hexRadius * 1.5) + hexRadius);
+			y = (hex.rc * hexRadius * 1.5) + hexRadius;
 			break;
 
 		case "odd-q":
-			yOffset = (hex.qc % 2 === 0) ? hexWidth : (hexWidth / 2);
-			y = height - ((hex.rc * hexWidth) + yOffset);
+			yOffset = (hex.qc % 2 === 1) ? hexWidth : (hexWidth / 2);
+			y = (hex.rc * hexWidth) + yOffset;
 			break;
 
 		case "even-q":
-			yOffset = (hex.qc % 2 === 1) ? hexWidth : (hexWidth / 2);
-			y = height - ((hex.rc * hexWidth) + yOffset);
+			yOffset = (hex.qc % 2 === 0) ? hexWidth : (hexWidth / 2);
+			y = (hex.rc * hexWidth) + yOffset;
 			break;
 	}
 

@@ -62,9 +62,9 @@ tape("hexes have the expected absolute co-ordinates", function(test) {
 	exampleHexJSON.layout = "odd-r";
 	var hexes = h.renderHexJSON(exampleHexJSON, 500, 500);
 	test.equal(hexes[0].qc, 0);
-	test.equal(hexes[0].rc, 0);
+	test.equal(hexes[0].rc, 3);
 	test.equal(hexes[15].qc, 3);
-	test.equal(hexes[15].rc, 3);
+	test.equal(hexes[15].rc, 0);
 	test.end();
 });
 
@@ -72,7 +72,7 @@ tape("hexes have the expected x and y for odd-r layout", function(test) {
 	exampleHexJSON.layout = "odd-r";
 	var hexes = h.renderHexJSON(exampleHexJSON, 500, 500);
 	test.equal(hexes[0].x, 111.1111111111111);
-	test.equal(hexes[0].y, 435.84997009004155);
+	test.equal(hexes[0].y, 352.82516450477135);
 	test.end();
 });
 
@@ -80,7 +80,7 @@ tape("hexes have the expected x and y for odd-r layout with an odd number of row
 	exampleHexJSONOdd.layout = "odd-r";
 	var hexes = h.renderHexJSON(exampleHexJSONOdd, 500, 500);
 	test.equal(hexes[0].x, 55.55555555555555);
-	test.equal(hexes[0].y, 435.84997009004155);
+	test.equal(hexes[0].y, 256.6001196398337);
 	test.end();
 });
 
@@ -88,7 +88,7 @@ tape("hexes have the expected x and y for even-r layout", function(test) {
 	exampleHexJSON.layout = "even-r";
 	var hexes = h.renderHexJSON(exampleHexJSON, 500, 500);
 	test.equal(hexes[0].x, 55.55555555555555);
-	test.equal(hexes[0].y, 435.84997009004155);
+	test.equal(hexes[0].y, 352.82516450477135);
 	test.end();
 });
 
@@ -96,7 +96,7 @@ tape("hexes have the expected x and y for even-r layout with an odd number of ro
 	exampleHexJSONOdd.layout = "even-r";
 	var hexes = h.renderHexJSON(exampleHexJSONOdd, 500, 500);
 	test.equal(hexes[0].x, 111.1111111111111);
-	test.equal(hexes[0].y, 435.84997009004155);
+	test.equal(hexes[0].y, 256.6001196398337);
 	test.end();
 });
 
@@ -104,7 +104,7 @@ tape("hexes have the expected x and y for odd-q layout", function(test) {
 	exampleHexJSON.layout = "odd-q";
 	var hexes = h.renderHexJSON(exampleHexJSON, 500, 500);
 	test.equal(hexes[0].x, 64.15002990995842);
-	test.equal(hexes[0].y, 388.8888888888889);
+	test.equal(hexes[0].y, 388.88888888888886);
 	test.end();
 });
 
@@ -112,7 +112,7 @@ tape("hexes have the expected x and y for even-q layout", function(test) {
 	exampleHexJSON.layout = "even-q";
 	var hexes = h.renderHexJSON(exampleHexJSON, 500, 500);
 	test.equal(hexes[0].x, 64.15002990995842);
-	test.equal(hexes[0].y, 444.44444444444446);
+	test.equal(hexes[0].y, 444.4444444444444);
 	test.end();
 });
 
