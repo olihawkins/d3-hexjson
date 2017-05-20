@@ -50,7 +50,7 @@ export default function renderHexJSON(hexjson, width, height) {
 		hex.rc = rmax - hex.r;
 
 		// Calculate the x and y position of each hex for this svg
-		hex.x = getX(hex, layout, hexWidth, hexRadius, rnum);
+		hex.x = getX(hex, layout, hexWidth, hexRadius);
 		hex.y = getY(hex, layout, hexWidth, hexRadius, height);
 
 		// Add the vertex positions and points relative to x and y
@@ -62,7 +62,7 @@ export default function renderHexJSON(hexjson, width, height) {
 };
 
 // Get the x position for a hex
-function getX(hex, layout, hexWidth, hexRadius, rnum) {
+function getX(hex, layout, hexWidth, hexRadius) {
 
 	var x = 0,
 		xOffset = 0;
