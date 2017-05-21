@@ -26,7 +26,9 @@ Note that while the absolute row numbers of each hex are represented internally 
 
 ## Example Usage
 
-Given the following HexJSON stored in the file *example.hexjson*:
+The following example shows the most common usage. See the code in action in this [block](https://bl.ocks.org/henryjameslau/5daca6e4667c41ae85959da614a37787) by [Henry Lau](https://github.com/henryjameslau).
+
+Given this HexJSON stored in the file *example.hexjson*:
 
 ```javascript
 {

@@ -55,7 +55,7 @@
 
 			// Calculate the x and y position of each hex for this svg
 			hex.x = getX(hex, layout, hexWidth, hexRadius);
-			hex.y = getY(hex, layout, hexWidth, hexRadius, height);
+			hex.y = getY(hex, layout, hexWidth, hexRadius);
 
 			// Add the vertex positions and points relative to x and y
 			hex.vertices = vertices;
@@ -93,7 +93,7 @@
 	}
 
 	// Get the y position for a hex
-	function getY(hex, layout, hexWidth, hexRadius, height) {
+	function getY(hex, layout, hexWidth, hexRadius) {
 
 		var y = 0,
 			yOffset = 0;
