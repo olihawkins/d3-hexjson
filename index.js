@@ -1,1 +1,4 @@
-export {default as renderHexJSON} from "./src/render";
+export {
+	renderHexJSON as renderHexJSON,
+	getGridForHexJSON as getGridForHexJSON
+} from "./src/render";

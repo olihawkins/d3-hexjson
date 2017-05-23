@@ -1,6 +1,7 @@
 import {min, max} from "d3-array";
 
-export default function renderHexJSON(hexjson, width, height) {
+// Main render method
+export function renderHexJSON(hexjson, width, height) {
 
 	// Get the layout
 	var layout = hexjson.layout;
@@ -156,4 +157,37 @@ function getPoints(vertices) {
 	var points = "";
 	vertices.forEach(function(v) {points += v.x + "," + v.y + " ";});
 	return points.substring(0, points.length - 1);
+}
+
+// Creates a hexjson grid with the layout and dimensions of the given hexjson
+export function getGridForHexJSON(hexjson) {
+
+	// Create a new HexJSON object for the grid
+	var grid = {};
+	grid.layout = hexjson.layout;
+	grid.hexes = {};
+
+	// Get the hex objects from the hexjson as an array
+	var hexes = [];
+	
+	Object.keys(hexjson.hexes).forEach(function(key) {
+		hexes.push(hexjson.hexes[key]);
+	});
+
+	// Calculate the number of rows and columns in the grid
+	var qmax = max(hexes, function(d) {return +d.q;}),
+		qmin = min(hexes, function(d) {return +d.q;}),
+		rmax = max(hexes, function(d) {return +d.r;}),
+		rmin = min(hexes, function(d) {return +d.r;});
+
+	// Create the hexjson grid
+	for (var i = qmin; i <= qmax; i++) {
+		for (var j = rmin; j <= rmax; j++) {
+
+			var fkey = "Q" + i + "R" + j;
+			grid.hexes[fkey] = {q: i, r: j};
+		}
+	}
+
+	return grid;
 }

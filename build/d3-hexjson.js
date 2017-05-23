@@ -4,6 +4,7 @@
 	(factory((global.d3 = global.d3 || {}),global.d3));
 }(this, function (exports,d3Array) { 'use strict';
 
+	// Main render method
 	function renderHexJSON(hexjson, width, height) {
 
 		// Get the layout
@@ -162,7 +163,41 @@
 		return points.substring(0, points.length - 1);
 	}
 
+	// Creates an empty hexjson grid with the dimensions of the given hexjson
+	function getGridForHexJSON(hexjson) {
+
+		// Create a new HexJSON object for the grid
+		var grid = {};
+		grid.layout = hexjson.layout;
+		grid.hexes = {};
+
+		// Get the hex objects from the hexjson as an array
+		var hexes = [];
+		
+		Object.keys(hexjson.hexes).forEach(function(key) {
+			hexes.push(hexjson.hexes[key]);
+		});
+
+		// Calculate the number of rows and columns in the grid
+		var qmax = d3Array.max(hexes, function(d) {return +d.q;}),
+			qmin = d3Array.min(hexes, function(d) {return +d.q;}),
+			rmax = d3Array.max(hexes, function(d) {return +d.r;}),
+			rmin = d3Array.min(hexes, function(d) {return +d.r;});
+
+		// Create the hexjson grid
+		for (var i = qmin; i <= qmax; i++) {
+			for (var j = rmin; j <= rmax; j++) {
+
+				var fkey = "Q" + i + "R" + j;
+				grid.hexes[fkey] = {q: i, r: j};
+			}
+		}
+
+		return grid;
+	}
+
 	exports.renderHexJSON = renderHexJSON;
+	exports.getGridForHexJSON = getGridForHexJSON;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 
