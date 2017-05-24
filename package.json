@@ -1,6 +1,6 @@
 {
   "name": "d3-hexjson",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Generate hexmaps from data that uses the Open Data Institute's HexJSON format.",
   "keywords": [
     "d3",

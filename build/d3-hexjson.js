@@ -163,7 +163,7 @@
 		return points.substring(0, points.length - 1);
 	}
 
-	// Creates an empty hexjson grid with the dimensions of the given hexjson
+	// Creates a hexjson grid with the layout and dimensions of the given hexjson
 	function getGridForHexJSON(hexjson) {
 
 		// Create a new HexJSON object for the grid
