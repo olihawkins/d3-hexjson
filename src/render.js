@@ -1,4 +1,4 @@
-import {min, max} from 'd3-array';
+import {min, max} from "d3-array";
 
 // Main render method
 export function renderHexJSON (hexjson, width, height) {
@@ -24,7 +24,7 @@ export function renderHexJSON (hexjson, width, height) {
 		rnum = rmax - rmin + 1;
 
 	// Calculate maximum radius the hexagons can have to fit the svg
-	if (layout === 'odd-r' || layout === 'even-r') {
+	if (layout === "odd-r" || layout === "even-r") {
 		hexRadius = min([(width) / ((qnum + 0.5) * Math.sqrt(3)),
 			height / ((rnum + 1 / 3) * 1.5)]);
 	} else {
@@ -63,18 +63,18 @@ function getX (hex, layout, hexWidth, hexRadius) {
 		xOffset = 0;
 
 	switch (layout) {
-		case 'odd-r':
+		case "odd-r":
 			xOffset = (hex.rc % 2 === 1) ? hexWidth : (hexWidth / 2);
 			x = (hex.qc * hexWidth) + xOffset;
 			break;
 
-		case 'even-r':
+		case "even-r":
 			xOffset = (hex.rc % 2 === 0) ? hexWidth : (hexWidth / 2);
 			x = (hex.qc * hexWidth) + xOffset;
 			break;
 
-		case 'odd-q':
-		case 'even-q':
+		case "odd-q":
+		case "even-q":
 			x = (hex.qc * hexRadius * 1.5) + hexRadius;
 			break;
 	}
@@ -88,17 +88,17 @@ function getY (hex, layout, hexWidth, hexRadius) {
 		yOffset = 0;
 
 	switch (layout) {
-		case 'odd-r':
-		case 'even-r':
+		case "odd-r":
+		case "even-r":
 			y = (hex.rc * hexRadius * 1.5) + hexRadius;
 			break;
 
-		case 'odd-q':
+		case "odd-q":
 			yOffset = (hex.qc % 2 === 1) ? hexWidth : (hexWidth / 2);
 			y = (hex.rc * hexWidth) + yOffset;
 			break;
 
-		case 'even-q':
+		case "even-q":
 			yOffset = (hex.qc % 2 === 0) ? hexWidth : (hexWidth / 2);
 			y = (hex.rc * hexWidth) + yOffset;
 			break;
@@ -114,8 +114,8 @@ function getVertices (layout, hexWidth, hexRadius) {
 	var vertices = [];
 
 	switch (layout) {
-		case 'odd-r':
-		case 'even-r':
+		case "odd-r":
+		case "even-r":
 
 			vertices.push({x: 0, y: (0 - hexRadius)});
 			vertices.push({x: (0 + hexWidth * 0.5), y: (0 - 0.5 * hexRadius)});
@@ -125,8 +125,8 @@ function getVertices (layout, hexWidth, hexRadius) {
 			vertices.push({x: (0 - hexWidth * 0.5), y: (0 - 0.5 * hexRadius)});
 			break;
 
-		case 'odd-q':
-		case 'even-q':
+		case "odd-q":
+		case "even-q":
 
 			vertices.push({x: (0 - hexRadius), y: 0});
 			vertices.push({x: (0 - 0.5 * hexRadius), y: (0 - hexWidth * 0.5)});
@@ -142,8 +142,8 @@ function getVertices (layout, hexWidth, hexRadius) {
 
 // Get the points attribute for a polygon with these vertices
 function getPoints (vertices) {
-	var points = '';
-	vertices.forEach(function (v) { points += v.x + ',' + v.y + ' ' });
+	var points = "";
+	vertices.forEach(function (v) { points += v.x + "," + v.y + " " });
 	return points.substring(0, points.length - 1);
 }
 
@@ -171,7 +171,7 @@ export function getGridForHexJSON (hexjson) {
 	var i, j, fkey;
 	for (i = qmin; i <= qmax; i++) {
 		for (j = rmin; j <= rmax; j++) {
-			fkey = 'Q' + i + 'R' + j;
+			fkey = "Q" + i + "R" + j;
 			grid.hexes[fkey] = {q: i, r: j};
 		}
 	}

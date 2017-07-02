@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-array')) :
-	typeof define === 'function' && define.amd ? define(['exports', 'd3-array'], factory) :
+	typeof exports === "object" && typeof module !== "undefined" ? factory(exports, require("d3-array")) :
+	typeof define === "function" && define.amd ? define(["exports", "d3-array"], factory) :
 	(factory((global.d3 = global.d3 || {}),global.d3));
-}(this, function (exports,d3Array) { 'use strict';
+}(this, function (exports,d3Array) { "use strict";
 
 	// Main render method
 	function renderHexJSON (hexjson, width, height) {
@@ -28,7 +28,7 @@
 			rnum = rmax - rmin + 1;
 
 		// Calculate maximum radius the hexagons can have to fit the svg
-		if (layout === 'odd-r' || layout === 'even-r') {
+		if (layout === "odd-r" || layout === "even-r") {
 			hexRadius = d3Array.min([(width) / ((qnum + 0.5) * Math.sqrt(3)),
 				height / ((rnum + 1 / 3) * 1.5)]);
 		} else {
@@ -67,18 +67,18 @@
 			xOffset = 0;
 
 		switch (layout) {
-			case 'odd-r':
+			case "odd-r":
 				xOffset = (hex.rc % 2 === 1) ? hexWidth : (hexWidth / 2);
 				x = (hex.qc * hexWidth) + xOffset;
 				break;
 
-			case 'even-r':
+			case "even-r":
 				xOffset = (hex.rc % 2 === 0) ? hexWidth : (hexWidth / 2);
 				x = (hex.qc * hexWidth) + xOffset;
 				break;
 
-			case 'odd-q':
-			case 'even-q':
+			case "odd-q":
+			case "even-q":
 				x = (hex.qc * hexRadius * 1.5) + hexRadius;
 				break;
 		}
@@ -92,17 +92,17 @@
 			yOffset = 0;
 
 		switch (layout) {
-			case 'odd-r':
-			case 'even-r':
+			case "odd-r":
+			case "even-r":
 				y = (hex.rc * hexRadius * 1.5) + hexRadius;
 				break;
 
-			case 'odd-q':
+			case "odd-q":
 				yOffset = (hex.qc % 2 === 1) ? hexWidth : (hexWidth / 2);
 				y = (hex.rc * hexWidth) + yOffset;
 				break;
 
-			case 'even-q':
+			case "even-q":
 				yOffset = (hex.qc % 2 === 0) ? hexWidth : (hexWidth / 2);
 				y = (hex.rc * hexWidth) + yOffset;
 				break;
@@ -118,8 +118,8 @@
 		var vertices = [];
 
 		switch (layout) {
-			case 'odd-r':
-			case 'even-r':
+			case "odd-r":
+			case "even-r":
 
 				vertices.push({x: 0, y: (0 - hexRadius)});
 				vertices.push({x: (0 + hexWidth * 0.5), y: (0 - 0.5 * hexRadius)});
@@ -129,8 +129,8 @@
 				vertices.push({x: (0 - hexWidth * 0.5), y: (0 - 0.5 * hexRadius)});
 				break;
 
-			case 'odd-q':
-			case 'even-q':
+			case "odd-q":
+			case "even-q":
 
 				vertices.push({x: (0 - hexRadius), y: 0});
 				vertices.push({x: (0 - 0.5 * hexRadius), y: (0 - hexWidth * 0.5)});
@@ -146,8 +146,8 @@
 
 	// Get the points attribute for a polygon with these vertices
 	function getPoints (vertices) {
-		var points = '';
-		vertices.forEach(function (v) { points += v.x + ',' + v.y + ' ' });
+		var points = "";
+		vertices.forEach(function (v) { points += v.x + "," + v.y + " " });
 		return points.substring(0, points.length - 1);
 	}
 
@@ -175,7 +175,7 @@
 		var i, j, fkey;
 		for (i = qmin; i <= qmax; i++) {
 			for (j = rmin; j <= rmax; j++) {
-				fkey = 'Q' + i + 'R' + j;
+				fkey = "Q" + i + "R" + j;
 				grid.hexes[fkey] = {q: i, r: j};
 			}
 		}
@@ -186,6 +186,5 @@
 	exports.renderHexJSON = renderHexJSON;
 	exports.getGridForHexJSON = getGridForHexJSON;
 
-	Object.defineProperty(exports, '__esModule', { value: true });
-
+	Object.defineProperty(exports, "__esModule", { value: true });
 }));
