@@ -1,58 +1,58 @@
 var tape = require("tape"),
 	array = require("d3-array"),
-    h = require("../");
+	h = require("../");
 
 var exampleDataA = {
-	"layout":"odd-r",
+	"layout": "odd-r",
 	"hexes": {
-		"Q0R0":{"q":3,"r":-1},
-		"Q1R0":{"q":4,"r":-1},
-		"Q2R0":{"q":5,"r":-1},
-		"Q3R0":{"q":6,"r":-1},
-		"Q0R1":{"q":3,"r":0},
-		"Q1R1":{"q":4,"r":0},
-		"Q2R1":{"q":5,"r":0},
-		"Q3R1":{"q":6,"r":0},
-		"Q0R2":{"q":3,"r":1},
-		"Q1R2":{"q":4,"r":1},
-		"Q2R2":{"q":5,"r":1},
-		"Q3R2":{"q":6,"r":1},
-		"Q0R3":{"q":3,"r":2},
-		"Q1R3":{"q":4,"r":2},
-		"Q2R3":{"q":5,"r":2},
-		"Q3R3":{"q":6,"r":2}
+		"Q0R0": {"q": 3, "r": -1},
+		"Q1R0": {"q": 4, "r": -1},
+		"Q2R0": {"q": 5, "r": -1},
+		"Q3R0": {"q": 6, "r": -1},
+		"Q0R1": {"q": 3, "r": 0},
+		"Q1R1": {"q": 4, "r": 0},
+		"Q2R1": {"q": 5, "r": 0},
+		"Q3R1": {"q": 6, "r": 0},
+		"Q0R2": {"q": 3, "r": 1},
+		"Q1R2": {"q": 4, "r": 1},
+		"Q2R2": {"q": 5, "r": 1},
+		"Q3R2": {"q": 6, "r": 1},
+		"Q0R3": {"q": 3, "r": 2},
+		"Q1R3": {"q": 4, "r": 2},
+		"Q2R3": {"q": 5, "r": 2},
+		"Q3R3": {"q": 6, "r": 2}
 	}
 };
 
 var exampleDataB = {
-	"layout":"odd-r",
+	"layout": "odd-r",
 	"hexes": {
-		"Q0R0":{"q":3,"r":-1},
-		"Q1R0":{"q":4,"r":-1},
-		"Q2R0":{"q":5,"r":-1},
-		"Q3R0":{"q":6,"r":-1},
-		"Q0R1":{"q":3,"r":0},
-		"Q1R1":{"q":4,"r":0},
-		"Q2R1":{"q":5,"r":0},
-		"Q3R1":{"q":6,"r":0},
-		"Q0R2":{"q":3,"r":1},
-		"Q1R2":{"q":4,"r":1},
-		"Q2R2":{"q":5,"r":1},
-		"Q3R2":{"q":6,"r":1}
+		"Q0R0": {"q": 3, "r": -1},
+		"Q1R0": {"q": 4, "r": -1},
+		"Q2R0": {"q": 5, "r": -1},
+		"Q3R0": {"q": 6, "r": -1},
+		"Q0R1": {"q": 3, "r": 0},
+		"Q1R1": {"q": 4, "r": 0},
+		"Q2R1": {"q": 5, "r": 0},
+		"Q3R1": {"q": 6, "r": 0},
+		"Q0R2": {"q": 3, "r": 1},
+		"Q1R2": {"q": 4, "r": 1},
+		"Q2R2": {"q": 5, "r": 1},
+		"Q3R2": {"q": 6, "r": 1}
 	}
 };
 
 var exampleDataC = {
-	"layout":"odd-r",
+	"layout": "odd-r",
 	"hexes": {
-		"Q0R0":{"q":0,"r":0},
-		"Q1R1":{"q":1,"r":1},
-		"Q1R2":{"q":1,"r":2},
-		"Q2R3":{"q":2,"r":3}
+		"Q0R0": {"q": 0, "r": 0},
+		"Q1R1": {"q": 1, "r": 1},
+		"Q1R2": {"q": 1, "r": 2},
+		"Q2R3": {"q": 2, "r": 3}
 	}
-}
+};
 
-tape("renderHexJSON() takes data in HexJSON format and returns it as an array of hexes", function(test) {
+tape("renderHexJSON() takes data in HexJSON format and returns it as an array of hexes", function (test) {
 	exampleDataA.layout = "odd-r";
 	var hexes = h.renderHexJSON(exampleDataA, 500, 500);
 	test.equal(Object.prototype.toString.call(hexes), "[object Array]");
@@ -60,7 +60,7 @@ tape("renderHexJSON() takes data in HexJSON format and returns it as an array of
 	test.end();
 });
 
-tape("keys of the hexJSON have been added to each hex as key property", function(test) {
+tape("keys of the hexJSON have been added to each hex as key property", function (test) {
 	exampleDataA.layout = "odd-r";
 	var hexes = h.renderHexJSON(exampleDataA, 500, 500);
 	test.equal(hexes[0].key, "Q0R0");
@@ -69,7 +69,7 @@ tape("keys of the hexJSON have been added to each hex as key property", function
 	test.end();
 });
 
-tape("hexes have the expected absolute co-ordinates", function(test) {
+tape("hexes have the expected absolute co-ordinates", function (test) {
 	exampleDataA.layout = "odd-r";
 	var hexes = h.renderHexJSON(exampleDataA, 500, 500);
 	test.equal(hexes[0].qc, 0);
@@ -79,7 +79,7 @@ tape("hexes have the expected absolute co-ordinates", function(test) {
 	test.end();
 });
 
-tape("hexes have the expected x and y for odd-r layout", function(test) {
+tape("hexes have the expected x and y for odd-r layout", function (test) {
 	exampleDataA.layout = "odd-r";
 	var hexes = h.renderHexJSON(exampleDataA, 500, 500);
 	test.equal(hexes[0].x, 111.1111111111111);
@@ -87,7 +87,7 @@ tape("hexes have the expected x and y for odd-r layout", function(test) {
 	test.end();
 });
 
-tape("hexes have the expected x and y for odd-r layout with an odd number of rows", function(test) {
+tape("hexes have the expected x and y for odd-r layout with an odd number of rows", function (test) {
 	exampleDataB.layout = "odd-r";
 	var hexes = h.renderHexJSON(exampleDataB, 500, 500);
 	test.equal(hexes[0].x, 55.55555555555555);
@@ -95,7 +95,7 @@ tape("hexes have the expected x and y for odd-r layout with an odd number of row
 	test.end();
 });
 
-tape("hexes have the expected x and y for even-r layout", function(test) {
+tape("hexes have the expected x and y for even-r layout", function (test) {
 	exampleDataA.layout = "even-r";
 	var hexes = h.renderHexJSON(exampleDataA, 500, 500);
 	test.equal(hexes[0].x, 55.55555555555555);
@@ -103,7 +103,7 @@ tape("hexes have the expected x and y for even-r layout", function(test) {
 	test.end();
 });
 
-tape("hexes have the expected x and y for even-r layout with an odd number of rows", function(test) {
+tape("hexes have the expected x and y for even-r layout with an odd number of rows", function (test) {
 	exampleDataB.layout = "even-r";
 	var hexes = h.renderHexJSON(exampleDataB, 500, 500);
 	test.equal(hexes[0].x, 111.1111111111111);
@@ -111,7 +111,7 @@ tape("hexes have the expected x and y for even-r layout with an odd number of ro
 	test.end();
 });
 
-tape("hexes have the expected x and y for odd-q layout", function(test) {
+tape("hexes have the expected x and y for odd-q layout", function (test) {
 	exampleDataA.layout = "odd-q";
 	var hexes = h.renderHexJSON(exampleDataA, 500, 500);
 	test.equal(hexes[0].x, 64.15002990995842);
@@ -119,7 +119,7 @@ tape("hexes have the expected x and y for odd-q layout", function(test) {
 	test.end();
 });
 
-tape("hexes have the expected x and y for even-q layout", function(test) {
+tape("hexes have the expected x and y for even-q layout", function (test) {
 	exampleDataA.layout = "even-q";
 	var hexes = h.renderHexJSON(exampleDataA, 500, 500);
 	test.equal(hexes[0].x, 64.15002990995842);
@@ -127,7 +127,7 @@ tape("hexes have the expected x and y for even-q layout", function(test) {
 	test.end();
 });
 
-tape("hexes have the expected vertices and points for row layouts", function(test) {
+tape("hexes have the expected vertices and points for row layouts", function (test) {
 	exampleDataA.layout = "odd-r";
 	var hexes = h.renderHexJSON(exampleDataA, 500, 500);
 	test.equal(hexes[0].vertices[0].x, 0);
@@ -145,14 +145,14 @@ tape("hexes have the expected vertices and points for row layouts", function(tes
 	test.equal(hexes[0].points, "" +
 		"0,-64.15002990995842 " +
 		"55.55555555555555,-32.07501495497921 " +
-		"55.55555555555555,32.07501495497921 " + 
-		"0,64.15002990995842 " + 
+		"55.55555555555555,32.07501495497921 " +
+		"0,64.15002990995842 " +
 		"-55.55555555555555,32.07501495497921 " +
 		"-55.55555555555555,-32.07501495497921");
 	test.end();
 });
 
-tape("hexes have the expected vertices and points for column layouts", function(test) {
+tape("hexes have the expected vertices and points for column layouts", function (test) {
 	exampleDataA.layout = "odd-q";
 	var hexes = h.renderHexJSON(exampleDataA, 500, 500);
 	test.equal(hexes[0].vertices[0].x, -64.15002990995842);
@@ -164,20 +164,20 @@ tape("hexes have the expected vertices and points for column layouts", function(
 	test.equal(hexes[0].vertices[3].x, 64.15002990995842);
 	test.equal(hexes[0].vertices[3].y, 0);
 	test.equal(hexes[0].vertices[4].x, 32.07501495497921);
-	test.equal(hexes[0].vertices[4].y, 55.55555555555555);	
+	test.equal(hexes[0].vertices[4].y, 55.55555555555555);
 	test.equal(hexes[0].vertices[5].x, -32.07501495497921);
 	test.equal(hexes[0].vertices[5].y, 55.55555555555555);
 	test.equal(hexes[0].points, "" +
-		"-64.15002990995842,0 " + 
-		"-32.07501495497921,-55.55555555555555 " + 
-		"32.07501495497921,-55.55555555555555 " + 
-		"64.15002990995842,0 " + 
+		"-64.15002990995842,0 " +
+		"-32.07501495497921,-55.55555555555555 " +
+		"32.07501495497921,-55.55555555555555 " +
+		"64.15002990995842,0 " +
 		"32.07501495497921,55.55555555555555 " +
 		"-32.07501495497921,55.55555555555555");
 	test.end();
 });
 
-tape("grid hexjson has the same layout as source hexjson", function(test) {
+tape("grid hexjson has the same layout as source hexjson", function (test) {
 	exampleDataA.layout = "odd-r";
 	exampleDataA.layout = "even-r";
 	exampleDataA.layout = "odd-q";
@@ -190,7 +190,7 @@ tape("grid hexjson has the same layout as source hexjson", function(test) {
 	test.end();
 });
 
-tape("grid hexjson has the expected number of hexes", function(test) {
+tape("grid hexjson has the expected number of hexes", function (test) {
 	var gridA = h.getGridForHexJSON(exampleDataA);
 	var gridB = h.getGridForHexJSON(exampleDataB);
 	var gridC = h.getGridForHexJSON(exampleDataC);
@@ -200,22 +200,22 @@ tape("grid hexjson has the expected number of hexes", function(test) {
 	test.end();
 });
 
-tape("grid hexjson has the same number of rows and columns as source hexjson", function(test) {
+tape("grid hexjson has the same number of rows and columns as source hexjson", function (test) {
 	var grids = [
-		{hexjson: h.getGridForHexJSON(exampleDataA), cols:4, rows: 4},
-		{hexjson: h.getGridForHexJSON(exampleDataB), cols:4, rows: 3},
-		{hexjson: h.getGridForHexJSON(exampleDataC), cols:3, rows: 4}
+		{hexjson: h.getGridForHexJSON(exampleDataA), cols: 4, rows: 4},
+		{hexjson: h.getGridForHexJSON(exampleDataB), cols: 4, rows: 3},
+		{hexjson: h.getGridForHexJSON(exampleDataC), cols: 3, rows: 4}
 	];
-	grids.forEach(function(grid) {
+	grids.forEach(function (grid) {
 		var hexes = [];
-		Object.keys(grid.hexjson.hexes).forEach(function(key) {
+		Object.keys(grid.hexjson.hexes).forEach(function (key) {
 			hexes.push(grid.hexjson.hexes[key]);
 		});
-		var qmax = array.max(hexes, function(d) {return +d.q;}),
-			qmin = array.min(hexes, function(d) {return +d.q;}),
-			rmax = array.max(hexes, function(d) {return +d.r;}),
-			rmin = array.min(hexes, function(d) {return +d.r;}),
-			qnum = qmax - qmin + 1, 
+		var qmax = array.max(hexes, function (d) { return +d.q }),
+			qmin = array.min(hexes, function (d) { return +d.q }),
+			rmax = array.max(hexes, function (d) { return +d.r }),
+			rmin = array.min(hexes, function (d) { return +d.r }),
+			qnum = qmax - qmin + 1,
 			rnum = rmax - rmin + 1;
 		test.equal(grid.cols, qnum);
 		test.equal(grid.rows, rnum);

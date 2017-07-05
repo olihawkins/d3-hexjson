@@ -129,6 +129,12 @@ d3.json("example.hexjson", function(error, hexjson) {
 </html>
 ```
 
+
+The example will look like this:
+
+![alt text](examples/example.png "Example hexmap")
+
+
 ## Example With Background Grid
 
 The following example shows how to render hexjson data as a hexmap with a background grid. Use the `getGridForHexJSON` function to generate a hexjson object representing the background grid for the source data, then render the background hexes **before** rendering the data hexes on top. [See it in action in this block](https://bl.ocks.org/henryjameslau/4057a986db97e475b1a154c9fcf1fa7d).
@@ -241,5 +247,10 @@ d3.json("example-grid.hexjson", function(error, hexjson) {
 </body>
 </html>
 ```
+
+The example will look like this:
+
+![alt text](examples/example-grid.png "Example hexmap with background grid")
+
 
 These examples can also be found in the *examples* directory.
