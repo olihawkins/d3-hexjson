@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-array')) :
-	typeof define === 'function' && define.amd ? define(['exports', 'd3-array'], factory) :
+	typeof exports === "object" && typeof module !== "undefined" ? factory(exports, require("d3-array")) :
+	typeof define === "function" && define.amd ? define(["exports", "d3-array"], factory) :
 	(factory((global.d3 = global.d3 || {}),global.d3));
-}(this, function (exports,d3Array) { 'use strict';
+}(this, function (exports,d3Array) { "use strict";
 
 	// Main render method
 	function renderHexJSON (hexjson, width, height) {
@@ -186,6 +186,5 @@
 	exports.renderHexJSON = renderHexJSON;
 	exports.getGridForHexJSON = getGridForHexJSON;
 
-	Object.defineProperty(exports, '__esModule', { value: true });
-
+	Object.defineProperty(exports, "__esModule", { value: true });
 }));
