@@ -178,3 +178,74 @@ export function getGridForHexJSON (hexjson) {
 
 	return grid;
 }
+
+function hashCoords (q,r) {
+	return q + ":" + r;
+}
+
+export function getBoundariesForHexJSON (hexjson, field) {
+		// Create a new HexJSON object for the grid
+		var grid = {};
+		grid.layout = hexjson.layout;
+		grid.hexes = {};
+
+		// Get the hex objects from the hexjson as an array
+		var hexes = [];
+
+		var hashTable = new Map();
+
+		var lines = [];
+
+		Object.keys(hexjson.hexes).forEach(function (key) {
+			hexes.push(hexjson.hexes[key]);
+			hashTable.set(hashCoords(hexjson.hexes[key].q,hexjson.hexes[key].r),
+				key);
+		});
+
+		// Calculate the number of rows and columns in the grid
+		var qmax = max(hexes, function (d) { return +d.q }),
+			qmin = min(hexes, function (d) { return +d.q }),
+			rmax = max(hexes, function (d) { return +d.r }),
+			rmin = min(hexes, function (d) { return +d.r });
+
+		// Create the hexjson grid
+		var i, j, fkey;
+		for (i = qmin; i <= qmax; i++) {
+			for (j = rmin; j <= rmax; j++) {
+				fkey = "Q" + i + "R" + j;
+				grid.hexes[fkey] = {q: i, r: j};
+			}
+		}
+
+		var vertices = getVertices(layout, hexWidth, hexRadius);
+		vertices.push(vertices[0]);
+		var points = getPoints(vertices);
+
+		const neighbourOffsets = [
+			{i: 0, q:0,r:1},
+			{i: 1, q:1,r:1},
+			{i: 2, q:1,r:0},
+			{i: 3, q:1,r:-1},
+			{i: 4, q:0,r:-1},
+			{i: 5, q:-1,r:0}
+		];
+		hexes.forEach(function(hex) {
+			hex.x = getX(hex, layout, hexWidth, hexRadius);
+			hex.y = getY(hex, layout, hexWidth, hexRadius);
+			neighbourOffsets.forEach( function(offset) {
+				var hash = hashCoords(hex.q+offset.q, hex.r+offset.r);
+				if (hashTable.has(hash)) {
+					var otherKey = hashTable.get(hash).key;
+					if (field in hex) {
+						if (hex.getProperty(field) != hexes.get(otherKey).getProperty(field)) {
+							lines.push({x: hex.x, y: hex.y,
+								start: points[offset.i], stop: points[offset.i+1]});
+						}
+					}
+				}
+			});
+
+		});
+
+		return lines;
+}
