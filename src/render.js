@@ -183,7 +183,7 @@ function hashCoords (q,r) {
 	return q + ":" + r;
 }
 
-export function getBoundariesForHexJSON (hexjson, field) {
+export function getBoundariesForHexJSON (hexjson, hexWidth, hexRadius, field) {
 		// Create a new HexJSON object for the grid
 		var grid = {};
 		grid.layout = hexjson.layout;
@@ -217,7 +217,7 @@ export function getBoundariesForHexJSON (hexjson, field) {
 			}
 		}
 
-		var vertices = getVertices(layout, hexWidth, hexRadius);
+		var vertices = getVertices(grid.layout, hexWidth, hexRadius);
 		vertices.push(vertices[0]);
 		var points = getPoints(vertices);
 
@@ -230,14 +230,14 @@ export function getBoundariesForHexJSON (hexjson, field) {
 			{i: 5, q:-1,r:0}
 		];
 		hexes.forEach(function(hex) {
-			hex.x = getX(hex, layout, hexWidth, hexRadius);
-			hex.y = getY(hex, layout, hexWidth, hexRadius);
+			hex.x = getX(hex, grid.layout, hexWidth, hexRadius);
+			hex.y = getY(hex, grid.layout, hexWidth, hexRadius);
 			neighbourOffsets.forEach( function(offset) {
 				var hash = hashCoords(hex.q+offset.q, hex.r+offset.r);
 				if (hashTable.has(hash)) {
 					var otherKey = hashTable.get(hash).key;
-					if (field in hex) {
-						if (hex.getProperty(field) != hexes.get(otherKey).getProperty(field)) {
+					if (field in hex && otherKey in hexes) {
+						if (hex[field] != hexes[otherKey].getProperty(field)) {
 							lines.push({x: hex.x, y: hex.y,
 								start: points[offset.i], stop: points[offset.i+1]});
 						}

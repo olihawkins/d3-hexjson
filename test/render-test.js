@@ -52,6 +52,16 @@ var exampleDataC = {
 	}
 };
 
+var exampleDataD = {
+	"layout":"odd-r",
+	"hexes": {
+		"Q0R0":{"q":0,"r":0,"prov":"QC"},
+		"Q1R1":{"q":1,"r":1,"prov":"QC"},
+		"Q1R2":{"q":1,"r":2,"prov":"ON"},
+		"Q2R3":{"q":2,"r":3,"prov":"PE"}
+	}
+}
+
 tape("renderHexJSON() takes data in HexJSON format and returns it as an array of hexes", function (test) {
 	exampleDataA.layout = "odd-r";
 	var hexes = h.renderHexJSON(exampleDataA, 500, 500);
@@ -222,3 +232,9 @@ tape("grid hexjson has the same number of rows and columns as source hexjson", f
 	});
 	test.end();
 });
+
+// tape("boundaries should come up with two separate boundaries", function (test) {
+// 	var lines = h.getBoundariesForHexJSON(exampleDataD, "prov");
+// 	test.equal(lines.length, 4);
+// 	test.end();
+// });
