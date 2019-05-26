@@ -183,69 +183,84 @@ function hashCoords (q,r) {
 	return q + ":" + r;
 }
 
-export function getBoundariesForHexJSON (hexjson, hexWidth, hexRadius, field) {
-		// Create a new HexJSON object for the grid
-		var grid = {};
-		grid.layout = hexjson.layout;
-		grid.hexes = {};
+
+export function getBoundariesForHexJSON (hexjson, width, height, field) {
 
 		// Get the hex objects from the hexjson as an array
 		var hexes = [];
-
-		var hashTable = new Map();
-
-		var lines = [];
+		const layout = hexjson.layout;
 
 		Object.keys(hexjson.hexes).forEach(function (key) {
 			hexes.push(hexjson.hexes[key]);
-			hashTable.set(hashCoords(hexjson.hexes[key].q,hexjson.hexes[key].r),
-				key);
 		});
 
-		// Calculate the number of rows and columns in the grid
-		var qmax = max(hexes, function (d) { return +d.q }),
-			qmin = min(hexes, function (d) { return +d.q }),
-			rmax = max(hexes, function (d) { return +d.r }),
-			rmin = min(hexes, function (d) { return +d.r });
+	// Calculate the number of rows and columns
+	var qmax = max(hexes, function (d) { return +d.q }),
+		qmin = min(hexes, function (d) { return +d.q }),
+		rmax = max(hexes, function (d) { return +d.r }),
+		rmin = min(hexes, function (d) { return +d.r });
 
-		// Create the hexjson grid
-		var i, j, fkey;
-		for (i = qmin; i <= qmax; i++) {
-			for (j = rmin; j <= rmax; j++) {
-				fkey = "Q" + i + "R" + j;
-				grid.hexes[fkey] = {q: i, r: j};
-			}
-		}
+	var qnum = qmax - qmin + 1,
+		rnum = rmax - rmin + 1;
+		var hexRadius;
 
-		var vertices = getVertices(grid.layout, hexWidth, hexRadius);
-		vertices.push(vertices[0]);
-		var points = getPoints(vertices);
+	// Calculate maximum radius the hexagons can have to fit the svg
+	if (layout === "odd-r" || layout === "even-r") {
+		hexRadius = min([(width) / ((qnum + 0.5) * Math.sqrt(3)),
+			height / ((rnum + 1 / 3) * 1.5)]);
+	} else {
+		hexRadius = min([(height) / ((rnum + 0.5) * Math.sqrt(3)),
+			width / ((qnum + 1 / 3) * 1.5)]);
+	}
 
-		const neighbourOffsets = [
-			{i: 0, q:0,r:1},
-			{i: 1, q:1,r:1},
-			{i: 2, q:1,r:0},
-			{i: 3, q:1,r:-1},
-			{i: 4, q:0,r:-1},
-			{i: 5, q:-1,r:0}
-		];
-		hexes.forEach(function(hex) {
-			hex.x = getX(hex, grid.layout, hexWidth, hexRadius);
-			hex.y = getY(hex, grid.layout, hexWidth, hexRadius);
-			neighbourOffsets.forEach( function(offset) {
-				var hash = hashCoords(hex.q+offset.q, hex.r+offset.r);
-				if (hashTable.has(hash)) {
-					var otherKey = hashTable.get(hash).key;
-					if (field in hex && otherKey in hexes) {
-						if (hex[field] != hexes[otherKey].getProperty(field)) {
-							lines.push({x: hex.x, y: hex.y,
-								start: points[offset.i], stop: points[offset.i+1]});
-						}
+	// Calculate the hexagon width
+	var hexWidth = hexRadius * Math.sqrt(3);
+		// Create an array into which we will put points along the
+		// boundaries between differing hexes.
+		// Each edge has five points, equally spaced.
+
+		var lines = [];
+		const hexRadiusSquared = hexRadius * hexRadius * 4 ;
+		// console.log("hexRadiusSquared treated as "+hexRadiusSquared);
+		const maxHex = hexes.length;
+		if (maxHex > 1) {
+			hexes.forEach( function(hex) {
+				hex.qc = hex.q - qmin;
+				hex.rc = rmax - hex.r;
+
+				// Calculate the x and y position of each hex for this svg
+				hex.x = getX(hex, layout, hexWidth, hexRadius);
+				hex.y = getY(hex, layout, hexWidth, hexRadius);
+			});
+			for (var i = 0; i < maxHex-1; i++) {
+				for ( var j = i+1; j < maxHex; j++) {
+					var hex = hexes[i];
+					var otherHex = hexes[j];
+					if (hex[field] != otherHex[field]) {
+						if (Math.abs(hex.q - otherHex.q) <= 1
+								&& Math.abs(hex.r - otherHex.r) <= 1 ) {
+							// console.log(hex.key +" ("+hex[field]+") "+otherHex.key +" ("+otherHex[field]+"): "+Math.sqrt(((hex.x-otherHex.x)*(hex.x-otherHex.x))+((hex.y-otherHex.y)*(hex.y-otherHex.y))));
+							if (((hex.x-otherHex.x)*(hex.x-otherHex.x))
+									+((hex.y-otherHex.y)*(hex.y-otherHex.y)) < hexRadiusSquared ) {
+								// they're neighbours
+								// console.log(hex.key +" ("+hex[field]+") "+otherHex.key +" ("+otherHex[field]+"): "+Math.sqrt(((hex.x-otherHex.x)*(hex.x-otherHex.x)) +((hex.y-otherHex.y)*(hex.y-otherHex.y))));
+								var midpoint = {};
+								midpoint.x = otherHex.x + (hex.x - otherHex.x)/2;
+								midpoint.y = otherHex.y + (hex.y - otherHex.y)/2;
+								var perp = {};
+								const denom = Math.sqrt(3)*4;
+								perp.dx = (hex.y - otherHex.y)/denom;
+								perp.dy = -(hex.x - otherHex.x)/denom;
+								lines.push({x: midpoint.x-2*perp.dx, y:midpoint.y-2*perp.dy});
+								lines.push({x: midpoint.x-perp.dx, y:midpoint.y-perp.dy});
+								lines.push({x: midpoint.x, y:midpoint.y});
+								lines.push({x: midpoint.x+perp.dx, y:midpoint.y+perp.dy});
+								lines.push({x: midpoint.x+2*perp.dx, y:midpoint.y+2*perp.dy});
+						};
 					}
 				}
-			});
-
-		});
-
-		return lines;
+			};
+		};
+	};
+	return lines;
 }
