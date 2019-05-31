@@ -39,7 +39,9 @@ d3.json("example-boundary.hexjson", function(error, hexjson) {
 	// Render the data hexes
 	var hexes = d3.renderHexJSON(hexjson, width, height);
 
-	var boundaries = d3.getBoundariesForHexJSON(hexjson, width, height, "prov");
+	// Generate points along the boundaries which differ according to a specified
+	// field - in this case, "prov"
+	var boundarySegments = d3.getBoundarySegmentsForHexJSON(hexjson, width, height, "prov");
 
 	// Draw the background grid BEFORE the data
 
@@ -87,40 +89,20 @@ d3.json("example-boundary.hexjson", function(error, hexjson) {
 		.attr("fill", "#111111")
 		.text(function(hex) {return hex.key + " " + hex.prov;});
 
-	// Try to draw boundary lines
-	var lineFunction = d3.line()
-													.x(function(d) { return d.x })
-													.y(function(d) { return d.y });
-													//.interpolate("linear");
-	var boundaryMarkers = svg
+	// Draw boundary lines
+	var boundaryLines = svg
 		.selectAll("g.lines")
-		.attr("stroke", "steelblue")
-		.attr("stroke-width", 1.5)
-		.attr("fill", "none")
-		//.selectAll("circle")
-		.data(boundaries)
+		.data(boundarySegments)
 		.enter()
-		.append("circle")
-		.attr("cx", function(d) { return d.x;})
-		.attr("cy", function(d) { return d.y;})
-		.attr("r", 5);
-
-
-	// var boundaryLines = hexmap.append("path")
-	// 													.attr("d", lineFunction(boundaries))
-	// 													.attr("stroke", "blue")
-	// 													.attr("stroke-width", 2)
-	// 													.attr("fill", "none");
-
-	// var hexbounds = svg
-	// 	.selectAll("g.data")
-	// 	.data(boundaries)
-	// 	.enter()
-	// 	.append("g")
-	// 	.attr("transform", function(line) {
-	// 		return "translate(" + line.x + "," + line.y + ")";
-	// 	})
-
+		.append("line")
+		.attr("x1", function(d) { return d.x1;})
+		.attr("y1", function(d) { return d.y1;})
+		.attr("x2", function(d) { return d.x2;})
+		.attr("y2", function(d) { return d.y2;})
+		.attr("stroke", "blue")
+		.attr("stroke-width", 2)
+		.attr("stroke-linecap", "round")
+		.attr("fill", "none");
 
 });
 

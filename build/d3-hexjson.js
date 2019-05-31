@@ -183,7 +183,7 @@
 		return grid;
 	}
 
-	function getBoundariesForHexJSON (hexjson, width, height, field) {
+	function getBoundaryDotsForHexJSON (hexjson, width, height, field) {
 
 			// Get the hex objects from the hexjson as an array
 			var hexes = [];
@@ -264,9 +264,96 @@
 		return lines;
 	}
 
+	function getBoundarySegmentsForHexJSON (hexjson, width, height, field) {
+
+			// Get the hex objects from the hexjson as an array
+			var hexes = [];
+			const layout = hexjson.layout;
+
+			Object.keys(hexjson.hexes).forEach(function (key) {
+				hexes.push(hexjson.hexes[key]);
+			});
+
+		// Calculate the number of rows and columns
+		var qmax = d3Array.max(hexes, function (d) { return +d.q }),
+			qmin = d3Array.min(hexes, function (d) { return +d.q }),
+			rmax = d3Array.max(hexes, function (d) { return +d.r }),
+			rmin = d3Array.min(hexes, function (d) { return +d.r });
+
+		var qnum = qmax - qmin + 1,
+			rnum = rmax - rmin + 1;
+			var hexRadius;
+
+		// Calculate maximum radius the hexagons can have to fit the svg
+		if (layout === "odd-r" || layout === "even-r") {
+			hexRadius = d3Array.min([(width) / ((qnum + 0.5) * Math.sqrt(3)),
+				height / ((rnum + 1 / 3) * 1.5)]);
+		} else {
+			hexRadius = d3Array.min([(height) / ((rnum + 0.5) * Math.sqrt(3)),
+				width / ((qnum + 1 / 3) * 1.5)]);
+		}
+
+		// Calculate the hexagon width
+		var hexWidth = hexRadius * Math.sqrt(3);
+			// Create an array into which we will put points along the
+			// boundaries between differing hexes.
+
+			// Each segment will be of the form
+			// {x: <start point X>, y: <start point Y>, cx: <difference X>, cy: <difference Y> }
+			// intended to be used with the simple line drawing functionality of d3
+			//
+
+			var segments = [];
+			const hexRadiusSquared = hexRadius * hexRadius * 4 ;
+			// console.log("hexRadiusSquared treated as "+hexRadiusSquared);
+			const maxHex = hexes.length;
+			if (maxHex > 1) {
+				hexes.forEach( function(hex) {
+					hex.qc = hex.q - qmin;
+					hex.rc = rmax - hex.r;
+
+					// Calculate the x and y position of each hex for this svg
+					hex.x = getX(hex, layout, hexWidth, hexRadius);
+					hex.y = getY(hex, layout, hexWidth, hexRadius);
+				});
+				for (var i = 0; i < maxHex-1; i++) {
+					for ( var j = i+1; j < maxHex; j++) {
+						var hex = hexes[i];
+						var otherHex = hexes[j];
+						if (hex[field] != otherHex[field]) {
+							if (Math.abs(hex.q - otherHex.q) <= 1
+									&& Math.abs(hex.r - otherHex.r) <= 1 ) {
+								// console.log(hex.key +" ("+hex[field]+") "+otherHex.key +" ("+otherHex[field]+"): "+Math.sqrt(((hex.x-otherHex.x)*(hex.x-otherHex.x))+((hex.y-otherHex.y)*(hex.y-otherHex.y))));
+								if (((hex.x-otherHex.x)*(hex.x-otherHex.x))
+										+((hex.y-otherHex.y)*(hex.y-otherHex.y)) < hexRadiusSquared ) {
+									// They're neighbours
+									// console.log(hex.key +" ("+hex[field]+") "+otherHex.key +" ("+otherHex[field]+"): "+Math.sqrt(((hex.x-otherHex.x)*(hex.x-otherHex.x)) +((hex.y-otherHex.y)*(hex.y-otherHex.y))));
+									var midpoint = {};
+									midpoint.x = otherHex.x + (hex.x - otherHex.x)/2;
+									midpoint.y = otherHex.y + (hex.y - otherHex.y)/2;
+									var perp = {};
+									var direction = +1;
+									if ( hex[field] < otherHex[field]) {
+										direction = -1;
+									} // otherwise, direction will be +1
+									const denom = Math.sqrt(3)*2*direction;
+									perp.dx = (hex.y - otherHex.y)/denom;
+									perp.dy = -(hex.x - otherHex.x)/denom;
+									segments.push({x1: midpoint.x-perp.dx, y1:midpoint.y-perp.dy,
+									 							x2: midpoint.x+perp.dx, y2: midpoint.y+perp.dy});
+							};
+						}
+					}
+				};
+			};
+		};
+		return segments;
+	}
+
 	exports.renderHexJSON = renderHexJSON;
 	exports.getGridForHexJSON = getGridForHexJSON;
-	exports.getBoundariesForHexJSON = getBoundariesForHexJSON;
+	exports.getBoundaryDotsForHexJSON = getBoundaryDotsForHexJSON;
+	exports.getBoundarySegmentsForHexJSON = getBoundarySegmentsForHexJSON;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 
