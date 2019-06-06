@@ -183,6 +183,8 @@
 		return grid;
 	}
 
+	// Creates a list of dots along the boundaries between
+	// hexes which have different values of "field"
 	function getBoundaryDotsForHexJSON (hexjson, width, height, field) {
 
 			// Get the hex objects from the hexjson as an array
@@ -264,6 +266,8 @@
 		return lines;
 	}
 
+	// Creates a list of line segments along the boundaries
+	// between hexes which have different values of "field"
 	function getBoundarySegmentsForHexJSON (hexjson, width, height, field) {
 
 			// Get the hex objects from the hexjson as an array
