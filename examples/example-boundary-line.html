@@ -17,6 +17,7 @@
 <script>
 
 d3.json("example-boundary.hexjson", function(error, hexjson) {
+//d3.json("constituencies.hexjson", function(error, hexjson) {
 
 	// Set the size and margins of the svg
 	var margin = {top: 10, right: 10, bottom: 10, left: 10},
@@ -40,8 +41,12 @@ d3.json("example-boundary.hexjson", function(error, hexjson) {
 	var hexes = d3.renderHexJSON(hexjson, width, height);
 
 	// Generate points along the boundaries which differ according to a specified
-	// field - in this case, "prov"
+	// field:
+	// - for the example-boundary.hexjson file, "prov"
+	// - for the constituencies.hexjson file, "u"
 	var boundarySegments = d3.getBoundarySegmentsForHexJSON(hexjson, width, height, "prov");
+//	var boundarySegments = d3.getBoundarySegmentsForHexJSON(hexjson, width, height, "u");
+
 
 	// Draw the background grid BEFORE the data
 
