@@ -1,6 +1,6 @@
 export {
-	renderHexJSON as renderHexJSON,
-	getGridForHexJSON as getGridForHexJSON,
-	getBoundaryDotsForHexJSON as getBoundaryDotsForHexJSON,
-	getBoundarySegmentsForHexJSON as getBoundarySegmentsForHexJSON
+	renderHexJSON,
+	getGridForHexJSON,
+	getBoundaryDotsForHexJSON,
+	getBoundarySegmentsForHexJSON
 } from "./src/render";
