@@ -47,6 +47,7 @@ d3.json("example-grid.hexjson", function(error, hexjson) {
 		.data(gridHexes)
 		.enter()
 		.append("g")
+		.attr("class", "grid")
 		.attr("transform", function(hex) {
 			return "translate(" + hex.x + "," + hex.y + ")";
 		});
@@ -65,6 +66,7 @@ d3.json("example-grid.hexjson", function(error, hexjson) {
 		.data(hexes)
 		.enter()
 		.append("g")
+		.attr("class", "data")
 		.attr("transform", function(hex) {
 			return "translate(" + hex.x + "," + hex.y + ")";
 		});
