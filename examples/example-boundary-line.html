@@ -13,10 +13,11 @@
 <body>
 <div id="vis"></div>
 <script src="d3.min.js"></script>
-<script src="../build/d3-hexjson.min.js"></script>
+<script src="../build/d3-hexjson.js"></script>
 <script>
 
-d3.json("example-grid.hexjson", function(error, hexjson) {
+d3.json("example-boundary.hexjson", function(error, hexjson) {
+//d3.json("constituencies.hexjson", function(error, hexjson) {
 
 	// Set the size and margins of the svg
 	var margin = {top: 10, right: 10, bottom: 10, left: 10},
@@ -39,6 +40,14 @@ d3.json("example-grid.hexjson", function(error, hexjson) {
 	// Render the data hexes
 	var hexes = d3.renderHexJSON(hexjson, width, height);
 
+	// Generate points along the boundaries which differ according to a specified
+	// field:
+	// - for the example-boundary.hexjson file, "prov"
+	// - for the constituencies.hexjson file, "u"
+	var boundarySegments = d3.getBoundarySegmentsForHexJSON(hexjson, width, height, "prov");
+//	var boundarySegments = d3.getBoundarySegmentsForHexJSON(hexjson, width, height, "u");
+
+
 	// Draw the background grid BEFORE the data
 
 	// Bind the grid hexes to g.grid elements of the svg and position them
@@ -47,7 +56,6 @@ d3.json("example-grid.hexjson", function(error, hexjson) {
 		.data(gridHexes)
 		.enter()
 		.append("g")
-		.attr("class", "grid")
 		.attr("transform", function(hex) {
 			return "translate(" + hex.x + "," + hex.y + ")";
 		});
@@ -66,7 +74,6 @@ d3.json("example-grid.hexjson", function(error, hexjson) {
 		.data(hexes)
 		.enter()
 		.append("g")
-		.attr("class", "data")
 		.attr("transform", function(hex) {
 			return "translate(" + hex.x + "," + hex.y + ")";
 		});
@@ -84,7 +91,24 @@ d3.json("example-grid.hexjson", function(error, hexjson) {
 		.append("text")
 		.append("tspan")
 		.attr("text-anchor", "middle")
-		.text(function(hex) {return hex.key;});
+		.attr("fill", "#111111")
+		.text(function(hex) {return hex.key + " " + hex.prov;});
+
+	// Draw boundary lines
+	var boundaryLines = svg
+		.selectAll("g.lines")
+		.data(boundarySegments)
+		.enter()
+		.append("line")
+		.attr("x1", function(d) { return d.x1;})
+		.attr("y1", function(d) { return d.y1;})
+		.attr("x2", function(d) { return d.x2;})
+		.attr("y2", function(d) { return d.y2;})
+		.attr("stroke", "blue")
+		.attr("stroke-width", 2)
+		.attr("stroke-linecap", "round")
+		.attr("fill", "none");
+
 });
 
 </script>

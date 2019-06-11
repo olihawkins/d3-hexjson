@@ -13,10 +13,10 @@
 <body>
 <div id="vis"></div>
 <script src="d3.min.js"></script>
-<script src="../build/d3-hexjson.min.js"></script>
+<script src="../build/d3-hexjson.js"></script>
 <script>
 
-d3.json("example-grid.hexjson", function(error, hexjson) {
+d3.json("example-boundary.hexjson", function(error, hexjson) {
 
 	// Set the size and margins of the svg
 	var margin = {top: 10, right: 10, bottom: 10, left: 10},
@@ -39,6 +39,10 @@ d3.json("example-grid.hexjson", function(error, hexjson) {
 	// Render the data hexes
 	var hexes = d3.renderHexJSON(hexjson, width, height);
 
+	// Generate points along the boundaries which differ according to a specified
+	// field - in this case, "prov"
+	var boundaryPoints = d3.getBoundaryDotsForHexJSON(hexjson, width, height, "prov");
+
 	// Draw the background grid BEFORE the data
 
 	// Bind the grid hexes to g.grid elements of the svg and position them
@@ -47,7 +51,6 @@ d3.json("example-grid.hexjson", function(error, hexjson) {
 		.data(gridHexes)
 		.enter()
 		.append("g")
-		.attr("class", "grid")
 		.attr("transform", function(hex) {
 			return "translate(" + hex.x + "," + hex.y + ")";
 		});
@@ -66,7 +69,6 @@ d3.json("example-grid.hexjson", function(error, hexjson) {
 		.data(hexes)
 		.enter()
 		.append("g")
-		.attr("class", "data")
 		.attr("transform", function(hex) {
 			return "translate(" + hex.x + "," + hex.y + ")";
 		});
@@ -84,7 +86,43 @@ d3.json("example-grid.hexjson", function(error, hexjson) {
 		.append("text")
 		.append("tspan")
 		.attr("text-anchor", "middle")
-		.text(function(hex) {return hex.key;});
+		.attr("fill", "#111111")
+		.text(function(hex) {return hex.key + " " + hex.prov;});
+
+	// Try to draw boundary lines
+	var lineFunction = d3.line()
+													.x(function(d) { return d.x })
+													.y(function(d) { return d.y });
+													//.interpolate("linear");
+	var boundaryMarkers = svg
+		.selectAll("g.lines")
+		.attr("stroke", "steelblue")
+		.attr("stroke-width", 1.5)
+		.attr("fill", "none")
+		.data(boundaryPoints)
+		.enter()
+		.append("circle")
+		.attr("cx", function(d) { return d.x;})
+		.attr("cy", function(d) { return d.y;})
+		.attr("r", 5);
+
+
+	// var boundaryLines = hexmap.append("path")
+	// 													.attr("d", lineFunction(boundaries))
+	// 													.attr("stroke", "blue")
+	// 													.attr("stroke-width", 2)
+	// 													.attr("fill", "none");
+
+	// var hexbounds = svg
+	// 	.selectAll("g.data")
+	// 	.data(boundaries)
+	// 	.enter()
+	// 	.append("g")
+	// 	.attr("transform", function(line) {
+	// 		return "translate(" + line.x + "," + line.y + ")";
+	// 	})
+
+
 });
 
 </script>

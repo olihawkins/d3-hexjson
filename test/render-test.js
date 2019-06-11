@@ -52,6 +52,28 @@ var exampleDataC = {
 	}
 };
 
+var exampleDataD = {
+	"layout": "odd-r",
+	"hexes": {
+		"Q0R0": {"q": 0, "r": 0, "prov": "QC"},
+		"Q1R0": {"q": 1, "r": 0, "prov": "QC"},
+		"Q2R0": {"q": 2, "r": 0, "prov": "QC"},
+		"Q3R0": {"q": 3, "r": 0, "prov": "QC"},
+		"Q0R1": {"q": 0, "r": 1, "prov": "QC"},
+		"Q1R1": {"q": 1, "r": 1, "prov": "QC"},
+		"Q2R1": {"q": 2, "r": 1, "prov": "ON"},
+		"Q3R1": {"q": 3, "r": 1, "prov": "QC"},
+		"Q0R2": {"q": 0, "r": 2, "prov": "QC"},
+		"Q1R2": {"q": 1, "r": 2, "prov": "QC"},
+		"Q2R2": {"q": 2, "r": 2, "prov": "ON"},
+		"Q3R2": {"q": 3, "r": 2, "prov": "QC"},
+		"Q0R3": {"q": 0, "r": 3, "prov": "ON"},
+		"Q1R3": {"q": 1, "r": 3, "prov": "QC"},
+		"Q2R3": {"q": 2, "r": 3, "prov": "QC"},
+		"Q3R3": {"q": 3, "r": 3, "prov": "QC"}
+	}
+};
+
 tape("renderHexJSON() takes data in HexJSON format and returns it as an array of hexes", function (test) {
 	exampleDataA.layout = "odd-r";
 	var hexes = h.renderHexJSON(exampleDataA, 500, 500);
@@ -220,5 +242,17 @@ tape("grid hexjson has the same number of rows and columns as source hexjson", f
 		test.equal(grid.cols, qnum);
 		test.equal(grid.rows, rnum);
 	});
+	test.end();
+});
+
+tape("boundaries should come up with twelve separate boundary segments", function (test) {
+	var lines = h.getBoundarySegmentsForHexJSON(exampleDataD, 500, 500, "prov");
+	test.equal(lines.length, 12);
+	test.end();
+});
+
+tape("boundaries should come up with sixty boundary points", function (test) {
+	var points = h.getBoundaryDotsForHexJSON(exampleDataD, 500, 500, "prov");
+	test.equal(points.length, 60);
 	test.end();
 });

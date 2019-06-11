@@ -28,6 +28,24 @@ Note that while the absolute row numbers of each hex are represented internally 
 
 Returns a new hexjson object representing the complete grid for a hexjson dataset. The returned grid has the same *layout* as the hexjson provided, and the same number of columns and rows needed to represent the data. The main purpose of this function is to produce the hex data needed to display a background grid for the given dataset (see the [example with background grid](#example-with-background-grid) below), but it also provides a convenient way to generate hex grids for other uses.
 
+<a name="getBoundarySegmentsForHexJSON" href="#getBoundarySegmentsForHexJSON">#</a> d3.<b>getBoundarySegmentsForHexJSON</b>(<i>hexjson</i>, <i>width</i>, <i>height</i>, <i>field</i>))
+
+Provides an array of line segments corresponding to the single edges between hexes in the provided *hexjson* which do not have the same value in their *field* property. The segments returned are in the form `{x1, x2, y1, y2}` as used to make simple SVG line segments. Unlike for **renderHexJSON**, these coordinates are absolute and do not need to be transformed.
+
+No line segments are added for external borders (where a hex has no adjacent hex). Line segments should be consistently directed with respect to the comparison of the *field* values of the two hexes.
+
+These line segments are not ordered so as to create contiguous polylines.
+
+This function has all the side-effects of adding properties to each hex as **renderHexJSON**.
+
+<a name="getBoundaryDotsForHexJSON" href="#getBoundaryDotsForHexJSON">#</a> d3.<b>getBoundaryDotsForHexJSON</b>(<i>hexjson</i>, <i>width</i>, <i>height</i>, <i>field</i>))
+
+Provides an array of points along the edges between hexes in the provided *hexjson* which do not have the same value in their *field* property. The points returned are in the form `{x, y}` and may be used (for example) as the centre of SVG circles. Unlike for **renderHexJSON**, these coordinates are absolute and do not need to be transformed.
+
+Each edge has five points - one at each end, and three evenly distributed in between. Where two or more edges meet at a vertex, each edge will contribute its own point in the array returned by this function. The points for each edge are included in sequence, but the edges' points are not ordered so as to create contiguous polylines.
+
+This function has all the side-effects of adding properties to each hex as **renderHexJSON**.
+
 ## Example
 
 The following example shows the most common usage. See the code in action in this [block](https://bl.ocks.org/henryjameslau/5daca6e4667c41ae85959da614a37787) by [Henry Lau](https://github.com/henryjameslau).
