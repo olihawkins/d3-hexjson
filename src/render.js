@@ -184,7 +184,7 @@ export function getGridForHexJSON (hexjson) {
 export function getBoundaryDotsForHexJSON (hexjson, width, height, field) {
 	// Get the hex objects from the hexjson as an array
 	var hexes = [];
-	const layout = hexjson.layout;
+	var layout = hexjson.layout;
 
 	Object.keys(hexjson.hexes).forEach(function (key) {
 		hexes.push(hexjson.hexes[key]);
@@ -216,8 +216,8 @@ export function getBoundaryDotsForHexJSON (hexjson, width, height, field) {
 	// Each edge has five points, equally spaced.
 
 	var lines = [];
-	const hexRadiusSquared = hexRadius * hexRadius * 4;
-	const maxHex = hexes.length;
+	var hexRadiusSquared = hexRadius * hexRadius * 4;
+	var maxHex = hexes.length;
 	if (maxHex > 1) {
 		hexes.forEach(function (hex) {
 			hex.qc = hex.q - qmin;
@@ -241,7 +241,7 @@ export function getBoundaryDotsForHexJSON (hexjson, width, height, field) {
 							midpoint.x = otherHex.x + (hex.x - otherHex.x) / 2;
 							midpoint.y = otherHex.y + (hex.y - otherHex.y) / 2;
 							var perp = {};
-							const denom = Math.sqrt(3) * 4;
+							var denom = Math.sqrt(3) * 4;
 							perp.dx = (hex.y - otherHex.y) / denom;
 							perp.dy = -(hex.x - otherHex.x) / denom;
 							lines.push({x: midpoint.x - 2 * perp.dx, y: midpoint.y - 2 * perp.dy});
@@ -263,7 +263,7 @@ export function getBoundaryDotsForHexJSON (hexjson, width, height, field) {
 export function getBoundarySegmentsForHexJSON (hexjson, width, height, field) {
 	// Get the hex objects from the hexjson as an array
 	var hexes = [];
-	const layout = hexjson.layout;
+	var layout = hexjson.layout;
 
 	Object.keys(hexjson.hexes).forEach(function (key) {
 		hexes.push(hexjson.hexes[key]);
@@ -299,8 +299,8 @@ export function getBoundarySegmentsForHexJSON (hexjson, width, height, field) {
 	//
 
 	var segments = [];
-	const hexRadiusSquared = hexRadius * hexRadius * 4;
-	const maxHex = hexes.length;
+	var hexRadiusSquared = hexRadius * hexRadius * 4;
+	var maxHex = hexes.length;
 	if (maxHex > 1) {
 		hexes.forEach(function (hex) {
 			hex.qc = hex.q - qmin;
@@ -328,7 +328,7 @@ export function getBoundarySegmentsForHexJSON (hexjson, width, height, field) {
 							if (hex[field] < otherHex[field]) {
 								direction = -1;
 							} // otherwise, direction will be +1
-							const denom = Math.sqrt(3) * 2 * direction;
+							var denom = Math.sqrt(3) * 2 * direction;
 							perp.dx = (hex.y - otherHex.y) / denom;
 							perp.dy = -(hex.x - otherHex.x) / denom;
 							segments.push({
